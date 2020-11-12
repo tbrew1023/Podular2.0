@@ -1,13 +1,20 @@
 <script>
+import firebase from 'firebase'
+
 export default {
   name: 'Home',
   data() {
     return {
+      name: null,
+      text: {
+        about: null,
+        about2: null
+      },
       enter: false,
       waveOffset: "120vw",
       waveLeft: true,
       options: {
-        normalScrollElements: '.test-container, .modal-active, .modal-inactive, .more-work-grid, .more-work-container, .modal-images',
+        normalScrollElements: '.grid',
         loopHorizontal: false,
         scrollingSpeed: 1500,
         slidesNavigation: false,
@@ -55,6 +62,26 @@ export default {
         'assets/renders/D_Handover_R4_Modern Tiki_V2.003.png',
         'assets/renders/D_Handover_Render 2 with Blocks_V1.001.png',
         'assets/renders/D_Handover_Render 4 Office_V2.004.png',
+      ],
+      galleryImages: [
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1387303_orig.png?alt=media&token=37e752ae-b580-4fed-b3ca-b0996c02f4cf',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1948920_orig.jpg?alt=media&token=1fcb20aa-5605-49bc-8810-79d4f1a55ae2',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/20151001-130856_orig.jpg?alt=media&token=a8109253-cad9-4129-a2ae-c828e5aa2ca0',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/2063890_orig.jpg?alt=media&token=69fdf29d-7674-440c-9278-4a42c388ddb5',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/277290_orig.jpg?alt=media&token=83887fe8-26b4-4c0a-bf12-652fcfff1ae0',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/3670961_orig.jpg?alt=media&token=16660392-e667-47b2-a5d4-d3db48ebff9a',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/420186_orig.jpg?alt=media&token=b455e9d8-f75f-4b78-814e-73e7f4fcfbe6',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/4728590_orig.jpg?alt=media&token=4ea42be1-0ff7-4529-8cc3-1556370d6eda',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/5149153_orig.jpg?alt=media&token=5d6e3bbc-ed59-4618-8dfe-491e55614d07',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/5506894_orig.png?alt=media&token=80679929-cbd7-4d20-9759-3fa0baea538b',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8136686_orig.jpg?alt=media&token=907f31e0-5d68-49ad-b989-b232e282fd69',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8327397_orig.jpg?alt=media&token=4d63903f-117f-451b-9b51-0d123b10c8a9',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8618218_orig.jpg?alt=media&token=2f4e81fa-f19a-49e3-b057-b1505846011b',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/9826820_orig.jpg?alt=media&token=2bb4c44b-f172-4128-8672-4bcd6fc965aa',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/9960622_orig.jpg?alt=media&token=0084eb3a-85fc-40dc-8566-dd7b19b36725',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/cherryfilledpeach-1_1_orig.jpg?alt=media&token=9db6ec7d-3052-433c-a7f0-c3f9e26bd356',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/img-8283_1_orig.jpg?alt=media&token=2a28d0a4-189b-4e04-97bd-db366eb1697c',
+        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/short-ribs-3_orig.jpg?alt=media&token=a8564112-93ee-4fc7-8fb9-c0e0f028b189'
       ]
     }
   },
@@ -68,6 +95,8 @@ export default {
 
   },
   mounted() {
+    this.fetchTestData();
+    this.fetchText();
     this.hideNav = false; //hide nav on landing page?
     var i = 0;
     var o = 0;
@@ -149,8 +178,9 @@ export default {
       console.log(this.currentPreview);
     },
     handleMouseLeave(i, index) {
-      console.clear();
+      console.log('left');
       console.log('leave', index);
+      this.moveLeft();
 
       this.hover = false;
 
@@ -189,8 +219,32 @@ export default {
         console.log('invalid context');
       }
     },
+    enterOnSlide(slide, context) {
+      if(context == 'default') {
+        return ( this.activeSlide == slide ? 'enter' : 'stage-in' )
+      }
+    },
     dothething() {
       console.log('doing the thing');
+    },
+    fetchTestData() {
+      var fireRef = firebase.firestore();
+      fireRef.collection("test-data").where("age","==", 23).get().then((docs) => {
+        docs.forEach((doc) => {
+          this.name = doc.data().name;
+        });
+      });
+    },
+    fetchText() {
+      var fireRef = firebase.firestore();
+      fireRef.collection("text").get().then((docs) => {
+        docs.forEach((doc) => {
+          this.text.about = doc.data().about;
+          this.text.about2 = doc.data().about2
+        });
+        console.clear();
+        console.log(this.text.about);
+      });
     }
   }
 }
@@ -204,8 +258,6 @@ export default {
       <div :class="( smallEnter ? 'enter' : 'stage-left' )" class="modal-small">This is some text</div>
       <div :class="( bigEnter ? 'enter' : 'stage-left' )" class="modal-big"></div>
     </div-->
-
-
 
     <!-- social media buttons -->
     <div class="soc-container">
@@ -254,8 +306,7 @@ export default {
             <div class="about-container">
               <div class="about-text">
                 <div class="about-text-inner">
-                  <p :class="enterOn(2, 'default')">We specialize in reinventing spaces. Our modular, chic design and visually pleasing pods are ready for installation.</p>
-                  <p :class="enterOn(2, 'default')">Imagine a world where you have options! You found the perfect pop-up spot for your amazing food and beverage, or you just don't want wait for a long, expensive and exhausting build-out. We created the perfect space solution, so you don't have to. We can customize the pods to fit your inspiration.</p>
+                  <p :class="enterOn(2, 'default')">{{ text.about }}</p>
                   <div class="button-container">
                     <div @click="move(3)" class="arrows hoverable" :class="enterOn(2, 'arrows')"></div>
                     <div class="slide-button hoverable" @click="moveRight()"><div class="arrows arrows2 hoverable"></div></div>
@@ -273,13 +324,14 @@ export default {
             <div class="slide-button back hoverable" @click="moveLeft()"><div class="arrows arrows2 hoverable"></div></div>
 
             <div class="grid"><!-- animates first 11 items rendered -->
-              <!--div 
-                v-for="(i, index) in galleryImages[0].images" 
+              <div 
+                v-for="(i, index) in galleryImages" 
                 :key="i.index"
-                :id="'extra' + index" 
+                :id="'galler-iImg' + index" 
                 :style="'background-image: url(' + i + ')'"  
                 class="gal-item hoverable"
-              ></div-->
+                :class="enterOnSlide(0)"
+              ></div>
             </div>
 
           </div>        
@@ -293,8 +345,7 @@ export default {
             <div class="about-container">
               <div class="about-text">
                 <div class="about-text-inner">
-                  <p :class="enterOn(3, 'delay')">We specialize in reinventing spaces. Our modular, chic design and visually pleasing pods are ready for installation.</p>
-                  <p :class="enterOn(3, 'delay')">Imagine a world where you have options! You found the perfect pop-up spot for your amazing food and beverage, or you just don't want wait for a long, expensive and exhausting build-out. We created the perfect space solution, so you don't have to. We can customize the pods to fit your inspiration.</p>
+                  <p :class="enterOn(3, 'delay')">{{ text.about2 }}</p>
                   <div @click="move(4)" class="arrows hoverable" :class="enterOn(3, 'arrows')"></div>
                 </div>
               </div>
@@ -357,6 +408,34 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/styles/global';
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 24px;
+  height: 85vh;
+  width: 60vw;
+  //background: red;
+  position: absolute;
+  overflow: auto;
+  bottom: 0px;
+  padding-right: 24px;
+}
+
+.gal-item {
+  height: 200px;
+  background: blue;
+  background-size: 200%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+  cursor: zoom;
+  transition: 300ms;
+
+  &:hover {
+    background-size: 240%;
+  }
+}
 
 .back {
   right: 100px !important;
