@@ -163,14 +163,24 @@ export default {
     move(section) {
       this.$refs.fullpage.api.moveTo(section)
     },
+    moveRight() {
+      this.$refs.fullpage.api.moveSlideRight();
+    },
+    moveLeft() {
+      this.$refs.fullpage.api.moveSlideLeft();
+    },
     goDown() {
       this.move(2);
     },
     enterOn(section, context) {
       if(context == 'default') {
         return ( this.activeSection == (section - 1) ? 'enter' : 'stage-in' ) // TODO: adjust for up and down transitions
+      } else if(context == 'delay') {
+        return ( this.activeSection == (section - 1) ? 'delay-enter' : 'delay-stage' )
       } else if(context == 'big-image') {
         return ( this.activeSection == (section - 1) ? 'big-image-enter' : 'big-image-stage' )
+      } else if(context == 'big-image2') {
+        return ( this.activeSection == (section - 1) ? 'big-image2-enter' : 'big-image2-stage' )
       } else if(context == 'wave') {
         return ( this.activeSection == (section - 1) ? 'wave-enter' : 'wave-stage' )
       } else if(context == 'arrows') {
@@ -178,6 +188,9 @@ export default {
       } else {
         console.log('invalid context');
       }
+    },
+    dothething() {
+      console.log('doing the thing');
     }
   }
 }
@@ -191,6 +204,8 @@ export default {
       <div :class="( smallEnter ? 'enter' : 'stage-left' )" class="modal-small">This is some text</div>
       <div :class="( bigEnter ? 'enter' : 'stage-left' )" class="modal-big"></div>
     </div-->
+
+
 
     <!-- social media buttons -->
     <div class="soc-container">
@@ -216,7 +231,7 @@ export default {
     <full-page ref="fullpage" :options="options" id="fullpage">
 
       <!-- Section 1 (landing page) -->
-      <section style="background: #181818" class="section landing">
+      <section class="section landing">
         <div class="landing-container">
           <div class="video-container">
             <video loop muted data-keepplaying id="landing-video">
@@ -233,7 +248,7 @@ export default {
       </section>
       
       <!-- About -->
-      <section style="background: #181818" class="section">
+      <section style="background: black" class="section">
         <div class="slide">
           <div class="page-container">
             <div class="about-container">
@@ -241,40 +256,49 @@ export default {
                 <div class="about-text-inner">
                   <p :class="enterOn(2, 'default')">We specialize in reinventing spaces. Our modular, chic design and visually pleasing pods are ready for installation.</p>
                   <p :class="enterOn(2, 'default')">Imagine a world where you have options! You found the perfect pop-up spot for your amazing food and beverage, or you just don't want wait for a long, expensive and exhausting build-out. We created the perfect space solution, so you don't have to. We can customize the pods to fit your inspiration.</p>
-                  <div @click="move(3)" class="arrows hoverable" :class="enterOn(2, 'arrows')"></div>
+                  <div class="button-container">
+                    <div @click="move(3)" class="arrows hoverable" :class="enterOn(2, 'arrows')"></div>
+                    <div class="slide-button hoverable" @click="moveRight()"><div class="arrows arrows2 hoverable"></div></div>
+                  </div>
                 </div>
               </div>
-              <div id="big-image" class="image-slides full-image" :class="enterOn(2, 'big-image')"><div class="lil-wave" :class="enterOn(2, 'wave')"></div></div>
+              <div id="big-image" class="image-slides full-image" :class="enterOn(2, 'big-image')"><div class="wave-container"><div class="lil-wave" :class="enterOn(2, 'wave')"></div></div></div>
             </div>
           </div>        
         </div>
-        <div style="background: #181818" class="slide">
+        <div style="background: black" class="slide">
           <div class="page-container">
-            About2
-          </div>        
-        </div>
-        <div style="background: #181818" class="slide">
-          <div class="page-container">
-            <div class="page-container">
-              About3
+            <!-- GRID -->
+
+            <div class="slide-button back hoverable" @click="moveLeft()"><div class="arrows arrows2 hoverable"></div></div>
+
+            <div class="grid"><!-- animates first 11 items rendered -->
+              <!--div 
+                v-for="(i, index) in galleryImages[0].images" 
+                :key="i.index"
+                :id="'extra' + index" 
+                :style="'background-image: url(' + i + ')'"  
+                class="gal-item hoverable"
+              ></div-->
             </div>
-          </div>
+
+          </div>        
         </div>
       </section>
 
       <!-- Modular pods -->
-      <section style="background: #222" class="section">
+      <section style="background: black" class="section">
         <div class="slide">
           <div class="page-container">
             <div class="about-container">
               <div class="about-text">
                 <div class="about-text-inner">
-                  <p :class="enterOn(3, 'default')">We specialize in reinventing spaces. Our modular, chic design and visually pleasing pods are ready for installation.</p>
-                  <p :class="enterOn(3, 'default')">Imagine a world where you have options! You found the perfect pop-up spot for your amazing food and beverage, or you just don't want wait for a long, expensive and exhausting build-out. We created the perfect space solution, so you don't have to. We can customize the pods to fit your inspiration.</p>
+                  <p :class="enterOn(3, 'delay')">We specialize in reinventing spaces. Our modular, chic design and visually pleasing pods are ready for installation.</p>
+                  <p :class="enterOn(3, 'delay')">Imagine a world where you have options! You found the perfect pop-up spot for your amazing food and beverage, or you just don't want wait for a long, expensive and exhausting build-out. We created the perfect space solution, so you don't have to. We can customize the pods to fit your inspiration.</p>
                   <div @click="move(4)" class="arrows hoverable" :class="enterOn(3, 'arrows')"></div>
                 </div>
               </div>
-              <div id="big-image2" class="image-slides full-image" :class="enterOn(3, 'big-image')"><div class="lil-wave2" :class="enterOn(3, 'wave')"></div></div>
+              <div id="big-image2" class="image-slides full-image" :class="enterOn(3, 'big-image2')"><div class="wave-container">hi<div class="lil-wave" :class="enterOn(3, 'wave')"></div></div></div>
             </div>
           </div>        
         </div>
@@ -296,7 +320,7 @@ export default {
       <section class="section">
         <div style="background: #181818" class="slide">
           <div class="page-container">
-            <p>This page will house links to relevant resources</p>
+            <p>Customization</p>
           </div>        
         </div>
         <div style="background: #181818" class="slide">
@@ -334,6 +358,68 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/styles/global';
 
+.back {
+  right: 100px !important;
+  transform: rotate(180deg) !important;
+  background: black !important;
+}
+
+.slide-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  //margin: auto;
+  height: 80px;
+  width: 80px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 100%;
+  z-index: 9999;
+  cursor: pointer;
+  bottom: 36px;
+  right: 1960px;
+  transition: 300ms;
+
+  &:hover {
+    transform: scale(0.8);
+    background: rgba(0,0,0,1);
+  }
+}
+
+.arrow-button {
+  background: black;
+  position: absolute;
+  //transform: rotate(270deg) scale(1) !important;
+  cursor: pointer !important;
+  z-index: 999;
+  height: 80px;
+  width: 80px;
+  padding: 12px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //transform: rotate(90deg) !important;
+}
+
+.top-layer {
+  background: #127894;
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  top: 0px;
+  z-index:0;
+  cursor: pointer;
+}
+
+.arrows2 {
+  margin-right: 12px !important;
+  margin-top: -8px !important;
+  transform: rotate(270deg) scale(0.4) !important;
+}
+
 .lil-wave {
   background-image: $wave;
   background-size: cover;
@@ -362,7 +448,7 @@ export default {
   height: 100vh;
   width: 100px;
   //justify-self: flex-end;
-  background: orange;
+  //background: orange;
   transform: $flip scale(6);
   background-size: contain;
   background-position-y: 160%;
@@ -437,7 +523,7 @@ export default {
   .about-text-inner {
     width: 310px;
     z-index: 4;
-    margin-left: 100px;
+    margin-left: 155px;
   }
 }
 

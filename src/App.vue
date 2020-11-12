@@ -177,7 +177,7 @@ html {
 }
 
 #fp-nav {
-  margin-top: -250px !important;
+  margin-top: -190px !important;
   margin-left: 42px;
 
   li {
@@ -185,7 +185,7 @@ html {
   }
 
   .fp-tooltip {
-    font-size: 18px !important;
+    font-size: 14px !important;
     padding-left: 32px;
     line-height: 36px;
   }
