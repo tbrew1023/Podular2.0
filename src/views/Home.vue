@@ -277,7 +277,7 @@ export default {
       <div @click="() => { modalActive = false; }" class="exit-button hoverable">X</div>
       <div class="modal">
         <iframe class="iframe" v-if="modalContext == 'showroom'" src="http://wix.viar.live/embed/tour/tdodwm" width="400px" height="400px"></iframe>
-        <div v-if="modalContext == 'gallery'" :style="'width: 100%; height: 100%; background-image: url(' + currentModalImage + ')'" ></div>
+        <img :src="currentModalImage" style="border-radius: 12px" height="700px"/>
       </div>
     </div>
 
@@ -472,6 +472,9 @@ export default {
 
 .modal div {
   border-radius: 12px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .modal-inactive {
@@ -482,9 +485,6 @@ export default {
 .modal-active {
   opacity: 1;
   transform: scale(1);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   border-radius: 12px;
 }
 
@@ -502,8 +502,6 @@ export default {
   .modal {
     background: gray;
     border-radius: 12px;
-    height: 70%;
-    width: 70%;
   }
 }
 
