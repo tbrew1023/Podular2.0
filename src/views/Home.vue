@@ -15,10 +15,10 @@ export default {
         navigation: true,
         fadingEffect: true,
         navigationPosition: 'left',
-        navigationTooltips: ['Home','About', 'Donate', 'Resources','Contact'],
+        navigationTooltips: ['Home','About', 'Modular Pods', 'Customization','Showroom','Contact'],
         showActiveTooltip: true,
         easingcss3: 'cubic-bezier(0.65, 0, 0.35, 1)', //swoopy
-        anchors: ['home','about', 'donate', 'resources','contact'],
+        anchors: ['home','about', 'modular-pods', 'customization','showroom','contact'],
         onLeave: (origin, destination, direction) => {
           this.handleLeave(origin, destination, direction);
         },
@@ -38,10 +38,23 @@ export default {
       currentProjectTitle: '',
       scrollOverflow: false,
       context: 0,
-      images: [
-        'https://earthsky.org/upl/2020/06/ocean-apr27-2020-Cidy-Chai-North-Pacific-sq.jpeg',
-        'https://images.theconversation.com/files/295442/original/file-20191003-52796-1763ajl.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=496&fit=clip',
-        'https://upload.wikimedia.org/wikipedia/commons/e/e0/Clouds_over_the_Atlantic_Ocean.jpg'
+      currentImg: null,
+      imagesAbout: [
+        'assets/renders/BAR.png',
+        'assets/renders/FOODCOURT.png',
+        'assets/renders/OFFICE.png',
+        'assets/renders/GAMEROOM.png',
+        'assets/renders/SALON.png',
+        'assets/renders/RECEPTION.png'
+      ],
+      imagesModularPods: [
+        'assets/renders/D_Handover_R1_V1.001.png',
+        'assets/renders/D_Handover_R2 Mall_V1.004.png',
+        'assets/renders/D_Handover_R3_V1.001.png',
+        'assets/renders/D_Handover_R4_Modern Tiki_V1.003.png',
+        'assets/renders/D_Handover_R4_Modern Tiki_V2.003.png',
+        'assets/renders/D_Handover_Render 2 with Blocks_V1.001.png',
+        'assets/renders/D_Handover_Render 4 Office_V2.004.png',
       ]
     }
   },
@@ -56,15 +69,26 @@ export default {
   },
   mounted() {
     this.hideNav = false; //hide nav on landing page?
-    //var i = 0;
-    /*setInterval(() => {
-      document.getElementById('big-image').style.backgroundImage = 'url('+this.images[i]+')';
-      if(i == this.images.length - 1) {
+    var i = 0;
+    var o = 0;
+    setInterval(() => {
+      this.currentImg = i;
+      var aboutPath = this.imagesAbout[i];
+      var modularPodsPath = this.imagesModularPods[o];
+      document.getElementById('big-image').style.backgroundImage = 'url(' +  require('@/' + aboutPath) + ')';
+      document.getElementById('big-image2').style.backgroundImage = 'url(' +  require('@/' + modularPodsPath) + ')';
+      if(i == this.imagesAbout.length - 1) {
         i = 0;
       } else {
         i++;
       }
-    }, 5000);*/
+      if(o == this.imagesModularPods.length - 1) {
+        o = 0;
+      } else {
+        o++;
+      }
+      //console.log('next', i);
+    }, 5000);
   },
   computed: {
 
@@ -139,11 +163,18 @@ export default {
     move(section) {
       this.$refs.fullpage.api.moveTo(section)
     },
+    goDown() {
+      this.move(2);
+    },
     enterOn(section, context) {
       if(context == 'default') {
         return ( this.activeSection == (section - 1) ? 'enter' : 'stage-in' ) // TODO: adjust for up and down transitions
       } else if(context == 'big-image') {
         return ( this.activeSection == (section - 1) ? 'big-image-enter' : 'big-image-stage' )
+      } else if(context == 'wave') {
+        return ( this.activeSection == (section - 1) ? 'wave-enter' : 'wave-stage' )
+      } else if(context == 'arrows') {
+        return ( this.activeSection == (section - 1) ? 'arrows-enter' : 'arrows-stage' )
       } else {
         console.log('invalid context');
       }
@@ -163,10 +194,10 @@ export default {
 
     <!-- social media buttons -->
     <div class="soc-container">
-      <a href="#" target="_blank"><div class="hoverable soc-button fb"></div></a>
-      <a href="#" target="_blank"><div class="hoverable soc-button insta"></div></a>
-      <a href="#" target="_blank"><div class="hoverable soc-button tw"></div></a>
-      <a href="#" target="_blank"><div class="hoverable soc-button li"></div></a>
+      <a href="https://www.facebook.com/Caf%C3%A9Bellas-LLC-1664700527089434/" target="_blank"><div class="hoverable soc-button fb"></div></a>
+      <a href="https://www.instagram.com/cafebellas/" target="_blank"><div class="hoverable soc-button insta"></div></a>
+      <a href="https://twitter.com/cafebellas" target="_blank"><div class="hoverable soc-button tw"></div></a>
+      <a href="https://www.linkedin.com/company/cafebellas-of-illinois/" target="_blank"><div class="hoverable soc-button li"></div></a>
     </div>
 
     <!-- optional wave -->
@@ -185,34 +216,44 @@ export default {
     <full-page ref="fullpage" :options="options" id="fullpage">
 
       <!-- Section 1 (landing page) -->
-      <section style="background: linear-gradient(#000, #111)" class="section landing">
-        <div class="landing-container" :class="enterOn(1, 'default')">
-          <div class="logo"></div>
-          <p class="subtitle">This is a subtitle for the landing page of the site. A mission statement.</p>
-          <div class="button-container">
+      <section style="background: #181818" class="section landing">
+        <div class="landing-container">
+          <div class="video-container">
+            <video loop muted data-keepplaying id="landing-video">
+              <source src="../assets/videos/landing-reel.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="logo" :class="enterOn(1, 'default')"></div>
+          <!--div class="button-container">
             <div @click="move(2)" class="landing-button">Learn More</div>
             <div @click="move(3)" class="landing-button secondary">Donate</div>
-          </div>
-          <!--div @click="goDown" class="arrows hoverable"></div-->
+          </div-->
+          <div @click="goDown" class="arrows hoverable"></div>
         </div>
       </section>
       
       <!-- About -->
-      <section style="background: linear-gradient(#111, #222)" class="section">
+      <section style="background: #181818" class="section">
         <div class="slide">
           <div class="page-container">
             <div class="about-container">
-              <div class="about-text" :class="enterOn(2, 'default')"><p>This is a summary of the mission of the foundation, as well as a profile on Derrick Jr. This section should tell the story of the inception of the foundation, and Derrick Jr's life.</p></div>
-              <div id="big-image" class="image-slides full-image" :class="enterOn(2, 'big-image')"></div>
+              <div class="about-text">
+                <div class="about-text-inner">
+                  <p :class="enterOn(2, 'default')">We specialize in reinventing spaces. Our modular, chic design and visually pleasing pods are ready for installation.</p>
+                  <p :class="enterOn(2, 'default')">Imagine a world where you have options! You found the perfect pop-up spot for your amazing food and beverage, or you just don't want wait for a long, expensive and exhausting build-out. We created the perfect space solution, so you don't have to. We can customize the pods to fit your inspiration.</p>
+                  <div @click="move(3)" class="arrows hoverable" :class="enterOn(2, 'arrows')"></div>
+                </div>
+              </div>
+              <div id="big-image" class="image-slides full-image" :class="enterOn(2, 'big-image')"><div class="lil-wave" :class="enterOn(2, 'wave')"></div></div>
             </div>
           </div>        
         </div>
-        <div style="background: #222" class="slide">
+        <div style="background: #181818" class="slide">
           <div class="page-container">
             About2
           </div>        
         </div>
-        <div style="background: #222" class="slide">
+        <div style="background: #181818" class="slide">
           <div class="page-container">
             <div class="page-container">
               About3
@@ -221,29 +262,49 @@ export default {
         </div>
       </section>
 
-      <!-- Donate -->
-      <section style="background: linear-gradient(#222,#333)" class="section">
-        <div class="page-container">
-          <div class="donation-container" :class="enterOn(3, 'default')">
-            <div class="icon clock"></div>
-            Donation Portal is Coming Soon
+      <!-- Modular pods -->
+      <section style="background: #222" class="section">
+        <div class="slide">
+          <div class="page-container">
+            <div class="about-container">
+              <div class="about-text">
+                <div class="about-text-inner">
+                  <p :class="enterOn(3, 'default')">We specialize in reinventing spaces. Our modular, chic design and visually pleasing pods are ready for installation.</p>
+                  <p :class="enterOn(3, 'default')">Imagine a world where you have options! You found the perfect pop-up spot for your amazing food and beverage, or you just don't want wait for a long, expensive and exhausting build-out. We created the perfect space solution, so you don't have to. We can customize the pods to fit your inspiration.</p>
+                  <div @click="move(4)" class="arrows hoverable" :class="enterOn(3, 'arrows')"></div>
+                </div>
+              </div>
+              <div id="big-image2" class="image-slides full-image" :class="enterOn(3, 'big-image')"><div class="lil-wave2" :class="enterOn(3, 'wave')"></div></div>
+            </div>
+          </div>        
+        </div>
+        <div style="background: #181818" class="slide">
+          <div class="page-container">
+            About2
+          </div>        
+        </div>
+        <div style="background: #181818" class="slide">
+          <div class="page-container">
+            <div class="page-container">
+              About3
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Section 4 w slides -->
+      <!-- Customization -->
       <section class="section">
-        <div style="background: linear-gradient(#333,#444)" class="slide">
+        <div style="background: #181818" class="slide">
           <div class="page-container">
             <p>This page will house links to relevant resources</p>
           </div>        
         </div>
-        <div style="background: linear-gradient(#333,#444)" class="slide">
+        <div style="background: #181818" class="slide">
           <div class="page-container">
             Resource page 2
           </div>        
         </div>
-        <div style="background: linear-gradient(#333,#444)" class="slide">
+        <div style="background: #181818" class="slide">
           <div class="page-container">
             <div class="page-container">
               Resource page 3
@@ -252,10 +313,17 @@ export default {
         </div>
       </section>
 
-      <!-- Contact -->
-      <section style="background: linear-gradient(#444,#555)" class="section">
+      <!-- Showroom -->
+      <section style="background: #181818" class="section">
         <div class="page-container">
-          Contact information
+          Showroom
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section style="background: #181818" class="section">
+        <div class="page-container">
+          Contact
         </div>
       </section>
 
@@ -264,9 +332,84 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@import '../assets/variables';
+@import '../assets/styles/global';
 
-$buttonHeight: 50px;
+.lil-wave {
+  background-image: $wave;
+  background-size: cover;
+  //background-position: right;
+  //background-position-y: 170% !important;
+  background-repeat: repeat-y;
+  height: 100vh;
+  width: 180px !important;
+  transform: scale(2) translateX(33px);
+}
+
+.lil-wave2 {
+  background-image: $wave2;
+  background-size: cover;
+  //background-position: right;
+  //background-position-y: 170% !important;
+  background-repeat: repeat-y;
+  height: 100vh;
+  width: 180px !important;
+  transform: scale(2) translateX(33px);
+}
+
+.new-wave {
+  background-image: $wave;
+  //background: red;
+  height: 100vh;
+  width: 100px;
+  //justify-self: flex-end;
+  background: orange;
+  transform: $flip scale(6);
+  background-size: contain;
+  background-position-y: 160%;
+  background-repeat: repeat-y;
+  z-index: 3 !important;
+  transition: $drag;
+}
+
+#landing-video {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  margin: 0px;
+  z-index: 0;
+  filter: brightness(0.6);
+  transform: scale(1.3);
+}
+
+#big-image {
+  transition: 3s !important;
+}
+
+.insta {
+  background-image: url("../assets/i.png");
+  background-size: 125% !important;
+  filter: invert(1);
+}
+
+.fb {
+  background-image: url("../assets/f.png");
+  filter: invert(1);
+  background-size: 120% !important;
+}
+
+.li {
+  background-image: url("../assets/li.png");
+  filter: invert(1);
+  background-size: 105% !important;
+  transform: scale(1.2);
+}
+
+.tw {
+  background-image: url("../assets/t.png");
+  filter: invert(1);
+}
 
 .about-container {
   display: flex;
@@ -283,21 +426,26 @@ $buttonHeight: 50px;
   text-align: left;
   line-height: 2;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  //background-image: url('../assets/wave.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   //background: #444;
 
-  p {
-    width: 420px;
+  .about-text-inner {
+    width: 310px;
+    z-index: 4;
+    margin-left: 100px;
   }
 }
 
 
 .image-slides {
   height: 100vh;
-  background-image: url('../assets/manman/illustration.png');
-  filter: brightness(0.7) grayscale(1);
+  background-image: url('../assets/renders/BAR.png');
+  z-index: -1;
 }
 
 .donation-container {
@@ -329,12 +477,12 @@ $buttonHeight: 50px;
 }
 
 .logo {
-  background-image: url('../assets/sample-logo-white.png');
+  background-image: $logoText;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
   width: 500px;
-  height: 60px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -342,12 +490,14 @@ $buttonHeight: 50px;
   padding: 0px;
 }
 
+$buttonHeight: 50px;
+
 .landing-button {
   color: black;
   background: white;
   border-radius: $buttonHeight;
   height: $buttonHeight;;
-  width: 150px;
+  width: 120px;
   text-align: center;
   padding: 0px;
   line-height: $buttonHeight;
@@ -439,8 +589,8 @@ $buttonHeight: 50px;
 
 .soc-container {
   position: fixed;
-  top: $pad;
-  right: $pad;
+  bottom: $pad;
+  left: $pad;
   margin: auto;
   display: flex;
   justify-content: center;
@@ -513,7 +663,7 @@ $buttonHeight: 50px;
 .main-title {
   //background:red;
   width: 70px;
-  background-image: url("../assets/sample-emblem-white.png");
+  background-image: $logoEmblem;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;

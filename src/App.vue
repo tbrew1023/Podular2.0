@@ -3,10 +3,10 @@
     <div :class="(unveil ? 'swoop' : '' )" class="logo-loader"></div>
     <div :class="(unveil ? 'loading-veil unveil' : 'loading-veil')">
     </div>
-    <!--div class="cc" :class="[ 'g-cursor', { 'g-cursor_hover': hover }, {'g-cursor_hide': hideCursor} ]">
+    <div class="cc" :class="[ 'g-cursor', { 'g-cursor_hover': hover }, {'g-cursor_hide': hideCursor} ]">
       <div :style="cursorCircle" class="g-cursor__circle"></div>
       <div class="g-cursor__point" ref="point" :style="cursorPoint"></div>
-    </div-->
+    </div>
     <router-view :dataRef='dataRef' />
   </div>
 </template>
@@ -43,6 +43,9 @@ export default {
       this.unveil = true;
       //this.waveOffset = 700;
       console.log('unveiled');
+      setTimeout(() => {
+        document.getElementById('landing-video').play(); //delay landing page video
+      }, 500);
     }, 3000);
     document.addEventListener("mousemove", this.moveCursor);
     document.addEventListener('mouseleave', (e) => {
@@ -161,7 +164,7 @@ html {
   height: 200px;
   //background: pink;  
   transition: 2s cubic-bezier(0.65, 0, 0.35, 1);
-  background-image: url('assets/sample-emblem-white.png');
+  background-image: url('assets/podular-white-emblem.png');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -174,8 +177,8 @@ html {
 }
 
 #fp-nav {
-  margin-top: 0px !important;
-  margin-left: 48px;
+  margin-top: -250px !important;
+  margin-left: 42px;
 
   li {
     margin-bottom: 36px !important;
@@ -184,7 +187,7 @@ html {
   .fp-tooltip {
     font-size: 18px !important;
     padding-left: 32px;
-    line-height: 22px;
+    line-height: 36px;
   }
 
   .active span {
@@ -201,9 +204,10 @@ html {
 
   span {
     background: white !important;
+    opacity: 0.2;
     //background: rgba(0,0,0,0) !important;
-    //height: 24px !important;
-    //width: 24px !important;
+    height: 24px !important;
+    width: 24px !important;
     //transform: translate(-1px,-1px);
     transform: none !important;
 
@@ -216,13 +220,13 @@ html {
 
 .unveil {
   opacity: 0 !important;
-  transition: 4s;
+  transition: 6s;
   pointer-events: none;
 }
 
 .loading-veil {
   //display: none;
-  background: #222;
+  background: black;
   opacity: 1;
   width: 100%;
   height: 100vh;
@@ -234,7 +238,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: 2s;
+  transition: 8s;
 }
 
 // ---------- transition shit -----------
@@ -278,6 +282,8 @@ p {
 // --------- cursor stuff ----------
 
 .g-cursor {
+    position: absolute;
+
     &_hide {
       opacity: 0;
       width: 60px;
@@ -296,7 +302,7 @@ p {
       position: fixed;
       width: 36px;
       height: 36px;
-      border: 2px solid rgba(white, 1);
+      border: 2px solid rgba(white, 0.4);
       mix-blend-mode: difference;
       //background: rgba(white,0.3);
       border-radius: 100%;
@@ -333,10 +339,10 @@ p {
     &_hover {
       .g-cursor__point {
           opacity: 0;
-          width: 64px;
-          height: 64px;
-          margin-left: -24px;
-          margin-top: -24px;
+          width: 80px;
+          height: 80px;
+          margin-left: -42px;
+          margin-top: -42px;
           border: 2px solid rgba(white, 1);
           //background: white;
           //mix-blend-mode: difference;
@@ -352,10 +358,10 @@ p {
 
         .g-cursor__circle {
           opacity: 1;
-          width: 64px;
-          height: 64px;
-          margin-left: -12px;
-          margin-top: -12px;
+          width: 74px;
+          height: 74px;
+          margin-left: -22px;
+          margin-top: -22px;
           //background: rgba(white, 1);
           //border-color: transparent;
           transition: 
