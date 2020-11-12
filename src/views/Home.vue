@@ -18,7 +18,7 @@ export default {
       waveOffset: "120vw",
       waveLeft: true,
       options: {
-        normalScrollElements: '.grid',
+        normalScrollElements: '.grid, .modal, .modal-active',
         loopHorizontal: false,
         scrollingSpeed: 1500,
         slidesNavigation: false,
@@ -215,6 +215,8 @@ export default {
         return ( this.activeSection == (section - 1) ? 'big-image-enter' : 'big-image-stage' )
       } else if(context == 'big-image2') {
         return ( this.activeSection == (section - 1) ? 'big-image2-enter' : 'big-image2-stage' )
+      } else if(context == 'big-image3') {
+        return ( this.activeSection == (section - 1) ? 'big-image3-enter' : 'big-image3-stage' )
       } else if(context == 'wave') {
         return ( this.activeSection == (section - 1) ? 'wave-enter' : 'wave-stage' )
       } else if(context == 'arrows') {
@@ -254,8 +256,8 @@ export default {
       console.log('pascode submitted');
       if(this.passcode == 'caf3b31Laz!') {
         console.log('passcode correct!');
-        this.modalActive = true;
         this.modalContext = 'showroom';
+        this.modalActive = true;
         console.log(this.modalContext);
       } else {
         alert('Passcode is incorrect');
@@ -277,7 +279,7 @@ export default {
       <div @click="() => { modalActive = false; }" class="exit-button hoverable">X</div>
       <div class="modal">
         <iframe class="iframe" v-if="modalContext == 'showroom'" src="http://wix.viar.live/embed/tour/tdodwm" width="400px" height="400px"></iframe>
-        <img :src="currentModalImage" style="border-radius: 12px" height="700px"/>
+        <img v-if="modalContext == 'gallery'" :src="currentModalImage" style="border-radius: 12px" height="700px"/>
       </div>
     </div>
 
@@ -341,7 +343,9 @@ export default {
                   </div>
                 </div>
               </div>
-              <div id="big-image" class="image-slides full-image" :class="enterOn(2, 'big-image')"><div class="wave-container"><div class="lil-wave" :class="enterOn(2, 'wave')"></div></div></div>
+              <div id="big-image" class="image-slides full-image" :class="enterOn(2, 'big-image')">
+                <div class="wave-container"><div class="lil-wave" :class="enterOn(2, 'wave')"></div></div>
+              </div>
             </div>
           </div>        
         </div>
@@ -352,7 +356,7 @@ export default {
             <div class="slide-button back hoverable" @click="moveLeft()"><div class="arrows arrows2 hoverable"></div></div>
 
             <div :class="( modalActive ? 'modal-active' : 'modal-inactive' )" class="gallery-modal-container">
-              <div class="gallery-modal">an img</div>
+              <div class="gallery-modal">Image not found</div>
             </div>
 
             <div class="grid"><!-- animates first 11 items rendered -->
@@ -382,34 +386,55 @@ export default {
                   <div @click="move(4)" class="arrows hoverable" :class="enterOn(3, 'arrows')"></div>
                 </div>
               </div>
-              <div id="big-image2" class="image-slides full-image" :class="enterOn(3, 'big-image2')"><div class="wave-container"><div class="lil-wave" :class="enterOn(3, 'wave')"></div></div></div>
+              <div id="big-image2" class="image-slides full-image" :class="enterOn(3, 'big-image2')">
+                <div class="wave-container"><div class="lil-wave" :class="enterOn(3, 'wave')"></div></div>
+              </div>
             </div>
           </div>        
-        </div>
-        <div style="background: #181818" class="slide">
-          <div class="page-container">
-            About2
-          </div>        
-        </div>
-        <div style="background: #181818" class="slide">
-          <div class="page-container">
-            <div class="page-container">
-              About3
-            </div>
-          </div>
         </div>
       </section>
 
       <!-- Customization -->
-      <section class="section">
-        <div style="background: black" class="slide">
+      <section style="background: black" class="section">
+        <div class="slide">
           <div class="page-container">
-            <p>Customization</p>
+            <div class="about-container">
+              <div class="about-text">
+                <div class="about-text-inner">
+                  <p :class="enterOn(4, 'default')"></p>
+                  <div class="button-container">
+                    <div class="slide-button hoverable" @click="moveRight()"><div class="arrows arrows2 hoverable"></div></div>
+                  </div>
+                </div>
+              </div>
+              <div style="background: gray" id="big-image3" class="image-slides full-image" :class="enterOn(4, 'big-image3')">
+                <div class="wave-container"><div class="lil-wave" :class="enterOn(4, 'wave')"></div></div>
+              </div>
+            </div>
           </div>        
         </div>
-        <div style="background: #181818" class="slide">
+        <div style="background: black" class="slide">
           <div class="page-container">
-            Resource page 2
+            <!-- GRID -->
+
+            <div class="slide-button back hoverable" @click="moveLeft()"><div class="arrows arrows2 hoverable"></div></div>
+
+            <div :class="( modalActive ? 'modal-active' : 'modal-inactive' )" class="gallery-modal-container">
+              <div class="gallery-modal">Image not found</div>
+            </div>
+
+            <div class="grid"><!-- animates first 11 items rendered -->
+              <div 
+                v-for="(i, index) in galleryImages" 
+                :key="i.index"
+                :id="'galler-img' + index" 
+                :style="'background-image: url(' + i + ')'"  
+                class="gal-item hoverable"
+                :class="enterOnSlide(0, 'default')"
+                @click="handleGalleryItemClick(i)"
+              ></div>
+            </div>
+
           </div>        
         </div>
       </section>
@@ -445,8 +470,8 @@ export default {
 
 .iframe {
   border: none;
-  height: 100%;
-  width: 100%;
+  height: 70vh;
+  width: 70vw;
   border-radius: 12px;
 }
 

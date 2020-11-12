@@ -77,14 +77,7 @@ $drag: 2s;
   width: 0%;
   //transition-delay: 1.2s !important;
   transition: 1.5s !important;
-
-  &>* {
-    //filter: brightness(0);
-  }
-
-  .lil-wave {
-    //filter: brightness(1.455);
-  }
+  filter: brightness(0.3);
 }
 
 .big-image-enter {
@@ -102,10 +95,25 @@ $drag: 2s;
   width: 0%;
   //transition-delay: 1.2s !important;
   transition: 1.5s !important;
+  filter: brightness(0.3);
 }
 
 .big-image2-enter {
   width: 180vw;
+  transition-delay: 950ms !important;
+  transition: 3s $ezpz;
+  opacity: 1;
+}
+
+.big-image3-stage {
+  width: 0%;
+  //transition-delay: 1.2s !important;
+  transition: 1.5s !important;
+  filter: brightness(0.3);
+}
+
+.big-image3-enter {
+  width: 300vw;
   transition-delay: 950ms !important;
   transition: 3s $ezpz;
   opacity: 1;
