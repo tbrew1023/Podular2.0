@@ -5,7 +5,11 @@ export default {
   name: 'Home',
   data() {
     return {
+      currentModalImage: null,
+      modalContext: null,
+      passcode: null,
       name: null,
+      modalActive: false,
       text: {
         about: null,
         about2: null
@@ -245,6 +249,22 @@ export default {
         console.clear();
         console.log(this.text.about);
       });
+    },
+    submitPasscode() {
+      console.log('pascode submitted');
+      if(this.passcode == 'caf3b31Laz!') {
+        console.log('passcode correct!');
+        this.modalActive = true;
+        this.modalContext = 'showroom';
+        console.log(this.modalContext);
+      } else {
+        alert('Passcode is incorrect');
+      }
+    },
+    handleGalleryItemClick(context) {
+      this.modalContext = 'gallery';
+      this.modalActive = true;
+      this.currentModalImage = context;
     }
   }
 }
@@ -252,6 +272,14 @@ export default {
 
 <template>
   <div class="home">
+
+    <div :class="( modalActive ? 'modal-active' : 'modal-inactive' )" class="modal-container">
+      <div @click="() => { modalActive = false; }" class="exit-button hoverable">X</div>
+      <div class="modal">
+        <iframe class="iframe" v-if="modalContext == 'showroom'" src="http://wix.viar.live/embed/tour/tdodwm" width="400px" height="400px"></iframe>
+        <div v-if="modalContext == 'gallery'" :style="'width: 100%; height: 100%; background-image: url(' + currentModalImage + ')'" ></div>
+      </div>
+    </div>
 
     <!-- optional top layer for modals & such -->
     <!--div class="top-layer">
@@ -323,14 +351,19 @@ export default {
 
             <div class="slide-button back hoverable" @click="moveLeft()"><div class="arrows arrows2 hoverable"></div></div>
 
+            <div :class="( modalActive ? 'modal-active' : 'modal-inactive' )" class="gallery-modal-container">
+              <div class="gallery-modal">an img</div>
+            </div>
+
             <div class="grid"><!-- animates first 11 items rendered -->
               <div 
                 v-for="(i, index) in galleryImages" 
                 :key="i.index"
-                :id="'galler-iImg' + index" 
+                :id="'galler-img' + index" 
                 :style="'background-image: url(' + i + ')'"  
                 class="gal-item hoverable"
-                :class="enterOnSlide(0)"
+                :class="enterOnSlide(0, 'default')"
+                @click="handleGalleryItemClick(i)"
               ></div>
             </div>
 
@@ -349,7 +382,7 @@ export default {
                   <div @click="move(4)" class="arrows hoverable" :class="enterOn(3, 'arrows')"></div>
                 </div>
               </div>
-              <div id="big-image2" class="image-slides full-image" :class="enterOn(3, 'big-image2')"><div class="wave-container">hi<div class="lil-wave" :class="enterOn(3, 'wave')"></div></div></div>
+              <div id="big-image2" class="image-slides full-image" :class="enterOn(3, 'big-image2')"><div class="wave-container"><div class="lil-wave" :class="enterOn(3, 'wave')"></div></div></div>
             </div>
           </div>        
         </div>
@@ -369,7 +402,7 @@ export default {
 
       <!-- Customization -->
       <section class="section">
-        <div style="background: #181818" class="slide">
+        <div style="background: black" class="slide">
           <div class="page-container">
             <p>Customization</p>
           </div>        
@@ -379,26 +412,27 @@ export default {
             Resource page 2
           </div>        
         </div>
-        <div style="background: #181818" class="slide">
-          <div class="page-container">
-            <div class="page-container">
-              Resource page 3
-            </div>
-          </div>
-        </div>
       </section>
 
       <!-- Showroom -->
-      <section style="background: #181818" class="section">
-        <div class="page-container">
-          Showroom
+      <section class="section">
+        <div style="background: black" class="slide">
+          <div class="page-container">
+            <div class="passcode-input-container" :class="enterOn(5, 'default')">
+              <div class="showroom-text"></div>
+              <div class="input-container">
+                <input type="password" placeholder="Input passcode" v-model="passcode">
+                <div class="submit hoverable" @click="submitPasscode()" @keyup.enter="submitPasscode()"><b>></b></div>
+              </div>
+            </div>
+          </div>        
         </div>
       </section>
 
       <!-- Contact -->
       <section style="background: #181818" class="section">
         <div class="page-container">
-          Contact
+          
         </div>
       </section>
 
@@ -409,9 +443,128 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/styles/global';
 
+.iframe {
+  border: none;
+  height: 100%;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.exit-button {
+  position: absolute;
+  top: 64px;
+  right: 64px;
+  color: white;
+  height: 48px;
+  width: 48px;
+  line-height: 48px;
+  text-align: center;
+  font-weight: bold;
+  transition: 300ms;
+  font-size: 24px;
+  border-radius: 100%;
+
+  &:hover {
+    background: white;
+    color: black;
+  }
+}
+
+.modal div {
+  border-radius: 12px;
+}
+
+.modal-inactive {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.modal-active {
+  opacity: 1;
+  transform: scale(1);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+}
+
+.modal-container {
+  background: red;
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modal {
+    background: gray;
+    border-radius: 12px;
+    height: 70%;
+    width: 70%;
+  }
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.submit {
+  background: white;
+  border-radius: 0px 12px 12px 0px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 60px;
+  color: black;
+  border: 2px solid white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 300ms;
+
+  &:hover {
+    filter: brightness(0.4);
+  }
+}
+
+.passcode-input-container {
+  flex-direction: column;
+
+  input {
+    background: rgba(white, 0.1);
+    border-radius: 12px 0px 0px 12px;
+    border: none;
+    padding: 12px 12px 12px 24px;
+    text-align: center;
+    color: white;
+    border: 2px solid rgba(white, 0.1);
+    transition: 300ms;
+    font-size: 14px;
+
+    &:hover {
+      border: 2px white solid;
+    }
+  }
+}
+
+//caf3b31Laz!
+
+.showroom-text {
+  background-image: url('../assets/showroom-text.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 80px;
+  width: 500px;
+}
+
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 24px;
   height: 85vh;
   width: 60vw;
@@ -423,17 +576,53 @@ export default {
 }
 
 .gal-item {
-  height: 200px;
-  background: blue;
+  height: 300px;
+  background: gray;
   background-size: 200%;
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 8px;
   cursor: zoom;
-  transition: 300ms;
+  transition: 2s;
+
+  &:nth-child(1) {
+    transition-delay: 1.4s;  
+  }
+
+  &:nth-child(2) {
+    transition-delay: 1.2s;  
+  }
+
+  &:nth-child(3) {
+    transition-delay: 1s;  
+  }
+
+  &:nth-child(4) {
+    transition-delay: 1.6s;  
+  }
+
+  &:nth-child(5) {
+    transition-delay: 1.4s;  
+  }
+
+  &:nth-child(6) {
+    transition-delay: 1.2s;  
+  }
+
+  &:nth-child(7) {
+    transition-delay: 1.8s;  
+  }
+
+  &:nth-child(8) {
+    transition-delay: 1.6s;  
+  }
+
+  &:nth-child(9) {
+    transition-delay: 1.4s;  
+  }
 
   &:hover {
-    background-size: 240%;
+    //background-size: 240%;
   }
 }
 
