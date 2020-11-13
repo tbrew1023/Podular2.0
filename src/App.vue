@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <div :class="(unveil ? 'swoop' : '' )" class="logo-loader"></div>
+    <div v-if="step3" :class="(unveil ? 'swoop' : '' )" class="logo-loader"></div>
     <div :class="(unveil ? 'loading-veil unveil' : 'loading-veil')">
-      <svg v-if="!chunk" width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg v-if="!step2 && !step3" width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle id="initial-logo" cx="100" cy="100" r="72.5" stroke="white" stroke-width="55"/>
       </svg>
-      <div v-if="chunk" class="chunk-logo">
+      <div v-if="step2 && !step3" class="chunk-logo">
         <div class="chunk-big">
           <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M100 0C44.7715 0 0 44.7715 0 100C0 155.228 44.7715 200 100 200C155.228 200 200 155.228 200 100C200 44.7715 155.228 0 100 0ZM100 55.2504C75.2855 55.2504 55.2504 75.2855 55.2504 100C55.2504 124.715 75.2855 144.75 100 144.75C124.715 144.75 144.75 124.715 144.75 100C144.75 75.2855 124.715 55.2504 100 55.2504ZM200 99.8385H144.749C144.749 99.8923 144.75 99.9461 144.75 100C144.75 124.715 124.715 144.75 100 144.75C99.9461 144.75 99.8923 144.749 99.8385 144.749V200C99.8923 200 99.9461 200 100 200C155.228 200 200 155.228 200 100C200 99.9461 200 99.8923 200 99.8385Z" fill="white"/>
@@ -17,7 +17,7 @@
           </svg>
         </div>
       </div>
-      <!--div class="emblem-logo"></div-->
+      <!--div v-if="step3" class="emblem-logo"></div-->
     </div>
     <div class="cc" :class="[ 'g-cursor', { 'g-cursor_hover': hover }, {'g-cursor_hide': hideCursor} ]">
       <div :style="cursorCircle" class="g-cursor__circle"></div>
@@ -36,7 +36,8 @@ export default {
   },
   data() {
     return {
-      chunk: false,
+      step3: false,
+      step2: false,
       dataRef: {},
       xChild: 0,
       yChild: 0,
@@ -58,16 +59,19 @@ export default {
   mounted() {
     console.log('stroke length: ', document.getElementById('initial-logo').getTotalLength());
     setTimeout(() => {
-      this.changeLogo('chunk');
+      this.changeLogo('step3');
+    }, 5000);
+    setTimeout(() => {
+      this.changeLogo('step2');
     }, 3000);
     setTimeout(() => {
-      ///this.unveil = true;
+      this.unveil = true;
       //this.waveOffset = 700;
       console.log('unveiled');
       setTimeout(() => {
         document.getElementById('landing-video').play(); //delay landing page video
       }, 500);
-    }, 6000);
+    }, 5100);
     document.addEventListener("mousemove", this.moveCursor);
     document.addEventListener('mouseleave', (e) => {
       this.hideCursor = true;
@@ -107,8 +111,11 @@ export default {
       }, 100);
     },
     changeLogo(context) {
-      if(context == 'chunk') {
-        this.chunk = true;
+      if(context == 'step2') {
+        this.step2 = true;
+      } else if(context == 'step3') {
+        this.step3 = true;
+        this.step2 = false;
       }
     }
   }
@@ -117,9 +124,14 @@ export default {
 
 <style lang="scss">
 .emblem-logo {
-  background: blue;
+  //background: blue;
   width: 200px;
   height: 200px;
+  background-image: url('assets/podular-white-emblem.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: translate(12px, 12px) scale(1.13);
 }
 
 .chunk-logo {
@@ -134,7 +146,7 @@ export default {
   .chunk-small {
     position: absolute;
     transform: translate(100px,100px);
-    animation: pop 2s ease forwards;
+    animation: pop 2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
   }
 }
 
@@ -143,7 +155,7 @@ export default {
   width:200px;
   stroke-dasharray: 455;
   stroke-dashoffset: 455;
-  animation: 3s ease forwards circle-draw;
+  animation: 3s cubic-bezier(0.65, 0, 0.35, 1) forwards circle-draw;
 }
 
 @keyframes pop {
@@ -225,14 +237,14 @@ html {
   position: absolute;
   top: 0px;
   left: 0px;
-  transform: translate(calc(50vw - 100px), calc(50vh - 100px));
+  transform: translate(calc((50vw - 88px)), calc((50vh - 88px))) scale(1.13); //  transform: translate(12px, 12px) scale(1.13);
   margin: auto;
   z-index: 999999;
   width: 200px;
   height: 200px;
   //background: pink;  
   transition: 2s cubic-bezier(0.65, 0, 0.35, 1);
-  //background-image: url('assets/podular-white-emblem.png');
+  background-image: url('assets/podular-white-emblem.svg');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
