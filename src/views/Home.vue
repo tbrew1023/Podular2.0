@@ -56,16 +56,13 @@ export default {
         'assets/renders/OFFICE.png',
         'assets/renders/GAMEROOM.png',
         'assets/renders/SALON.png',
-        'assets/renders/RECEPTION.png'
-      ],
-      imagesModularPods: [
+        'assets/renders/RECEPTION.png',
         'assets/renders/D_Handover_R1_V1.001.png',
         'assets/renders/D_Handover_R2 Mall_V1.004.png',
         'assets/renders/D_Handover_R3_V1.001.png',
-        'assets/renders/D_Handover_R4_Modern Tiki_V1.003.png',
-        'assets/renders/D_Handover_R4_Modern Tiki_V2.003.png',
-        'assets/renders/D_Handover_Render 2 with Blocks_V1.001.png',
-        'assets/renders/D_Handover_Render 4 Office_V2.004.png',
+        'assets/renders/D_Handover_R4_ModernTiki_V1.003.png',
+        'assets/renders/D_Handover_Render2withBlocks_V1.001.png',
+        'assets/renders/D_Handover_Render4Office_V2.004.png',
       ],
       galleryImages: [
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1387303_orig.png?alt=media&token=37e752ae-b580-4fed-b3ca-b0996c02f4cf',
@@ -103,24 +100,16 @@ export default {
     this.fetchText();
     this.hideNav = false; //hide nav on landing page?
     var i = 0;
-    var o = 0;
     setInterval(() => {
       this.currentImg = i;
       var aboutPath = this.imagesAbout[i];
-      var modularPodsPath = this.imagesModularPods[o];
       document.getElementById('big-image').style.backgroundImage = 'url(' +  require('@/' + aboutPath) + ')';
-      document.getElementById('big-image2').style.backgroundImage = 'url(' +  require('@/' + modularPodsPath) + ')';
+      console.log(aboutPath);
       if(i == this.imagesAbout.length - 1) {
         i = 0;
       } else {
         i++;
       }
-      if(o == this.imagesModularPods.length - 1) {
-        o = 0;
-      } else {
-        o++;
-      }
-      //console.log('next', i);
     }, 5000);
   },
   computed: {
@@ -133,6 +122,20 @@ export default {
       console.log('direction: ', direction);
   
       this.activeSection = destination.index;
+
+      var video = document.getElementById('second-custom');
+
+      if(this.activeSection == 3) {
+        console.clear();
+        console.log('play vid');
+        video.play();
+      } else {
+        setTimeout(() => {
+          video.pause();
+          video.currentTime = 0;
+          video.load();
+        }, 2000);
+      }
 
       console.log('activeSection: ', this.activeSection);
 
@@ -184,7 +187,6 @@ export default {
     handleMouseLeave(i, index) {
       console.log('left');
       console.log('leave', index);
-      this.moveLeft();
 
       this.hover = false;
 
@@ -221,6 +223,8 @@ export default {
         return ( this.activeSection == (section - 1) ? 'wave-enter' : 'wave-stage' )
       } else if(context == 'arrows') {
         return ( this.activeSection == (section - 1) ? 'arrows-enter' : 'arrows-stage' )
+      } else if(context == 'custom-video') {
+        return ( this.activeSection == (section - 1) ? 'custom-vid-enter' : 'custom-vid-stage' )
       } else {
         console.log('invalid context');
       }
@@ -248,7 +252,7 @@ export default {
           this.text.about = doc.data().about;
           this.text.about2 = doc.data().about2
         });
-        console.clear();
+        //console.clear();
         console.log(this.text.about);
       });
     },
@@ -278,7 +282,7 @@ export default {
     <div :class="( modalActive ? 'modal-active' : 'modal-inactive' )" class="modal-container">
       <div @click="() => { modalActive = false; }" class="exit-button hoverable">X</div>
       <div class="modal">
-        <iframe class="iframe" v-if="modalContext == 'showroom'" src="http://wix.viar.live/embed/tour/tdodwm" width="400px" height="400px"></iframe>
+        <iframe class="iframe" v-if="modalContext == 'showroom'" src="https://wix.viar.live/embed/tour/tdodwm" width="400px" height="400px"></iframe>
         <img v-if="modalContext == 'gallery'" :src="currentModalImage" style="border-radius: 12px" height="700px"/>
       </div>
     </div>
@@ -318,6 +322,7 @@ export default {
           <div class="video-container">
             <video loop muted data-keepplaying id="landing-video">
               <source src="../assets/videos/landing-reel.mp4" type="video/mp4">
+              <source src="../assets/videos/landing-reel.ogg" type="video/ogg">
             </video>
           </div>
           <div class="logo" :class="enterOn(1, 'default')"></div>
@@ -396,45 +401,13 @@ export default {
 
       <!-- Customization -->
       <section style="background: black" class="section">
-        <div class="slide">
-          <div class="page-container">
-            <div class="about-container">
-              <div class="about-text">
-                <div class="about-text-inner">
-                  <p :class="enterOn(4, 'default')"></p>
-                  <div class="button-container">
-                    <div class="slide-button hoverable" @click="moveRight()"><div class="arrows arrows2 hoverable"></div></div>
-                  </div>
-                </div>
-              </div>
-              <div style="background: gray" id="big-image3" class="image-slides full-image" :class="enterOn(4, 'big-image3')">
-                <div class="wave-container"><div class="lil-wave" :class="enterOn(4, 'wave')"></div></div>
-              </div>
-            </div>
-          </div>        
-        </div>
         <div style="background: black" class="slide">
           <div class="page-container">
-            <!-- GRID -->
-
-            <div class="slide-button back hoverable" @click="moveLeft()"><div class="arrows arrows2 hoverable"></div></div>
-
-            <div :class="( modalActive ? 'modal-active' : 'modal-inactive' )" class="gallery-modal-container">
-              <div class="gallery-modal">Image not found</div>
+            <div class="video-container" :class="enterOn(4, 'custom-video')">
+              <video muted class="custom-video" id="second-custom">
+                <source src="../assets/videos/custom2.mp4" type="video/mp4">
+              </video>
             </div>
-
-            <div class="grid"><!-- animates first 11 items rendered -->
-              <div 
-                v-for="(i, index) in galleryImages" 
-                :key="i.index"
-                :id="'galler-img' + index" 
-                :style="'background-image: url(' + i + ')'"  
-                class="gal-item hoverable"
-                :class="enterOnSlide(0, 'default')"
-                @click="handleGalleryItemClick(i)"
-              ></div>
-            </div>
-
           </div>        
         </div>
       </section>
@@ -467,6 +440,22 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/styles/global';
+
+#big-image2 {
+  background-image: url('../assets/renders/sketch.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; 
+}
+
+.custom-video {
+  height: 100vh;
+  width: 100vw;
+  z-index: -1 !important;
+  transform: scale(1.15);
+  filter: brightness(0.5);
+  border-radius: 48px !important;
+}
 
 .iframe {
   border: none;
@@ -504,17 +493,23 @@ export default {
 
 .modal-inactive {
   opacity: 0;
-  transform: scale(0.8);
+
+  .modal {
+    transform: scale(0.8);
+  }
 }
 
 .modal-active {
   opacity: 1;
-  transform: scale(1);
   border-radius: 12px;
+
+  .modal {
+    transform: scale(1);
+  }
 }
 
 .modal-container {
-  background: red;
+  //background: red;
   height: 100vh;
   width: 100%;
   position: absolute;
@@ -668,7 +663,7 @@ export default {
   z-index: 9999;
   cursor: pointer;
   bottom: 36px;
-  right: 1960px;
+  right: 103vw;
   transition: 300ms;
 
   &:hover {
@@ -1254,8 +1249,6 @@ $buttonHeight: 50px;
   overflow: auto;
   pointer-events: none;
 }
-
-
 
 .blur {
   filter: blur(24px);

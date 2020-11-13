@@ -2,6 +2,22 @@
   <div id="app">
     <div :class="(unveil ? 'swoop' : '' )" class="logo-loader"></div>
     <div :class="(unveil ? 'loading-veil unveil' : 'loading-veil')">
+      <svg v-if="!chunk" width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle id="initial-logo" cx="100" cy="100" r="72.5" stroke="white" stroke-width="55"/>
+      </svg>
+      <div v-if="chunk" class="chunk-logo">
+        <div class="chunk-big">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M100 0C44.7715 0 0 44.7715 0 100C0 155.228 44.7715 200 100 200C155.228 200 200 155.228 200 100C200 44.7715 155.228 0 100 0ZM100 55.2504C75.2855 55.2504 55.2504 75.2855 55.2504 100C55.2504 124.715 75.2855 144.75 100 144.75C124.715 144.75 144.75 124.715 144.75 100C144.75 75.2855 124.715 55.2504 100 55.2504ZM200 99.8385H144.749C144.749 99.8923 144.75 99.9461 144.75 100C144.75 124.715 124.715 144.75 100 144.75C99.9461 144.75 99.8923 144.749 99.8385 144.749V200C99.8923 200 99.9461 200 100 200C155.228 200 200 155.228 200 100C200 99.9461 200 99.8923 200 99.8385Z" fill="white"/>
+          </svg>
+        </div>
+        <div class="chunk-small">
+          <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M99.9999 2.41118e-06L44.8384 0C44.8386 0.0537423 44.8387 0.107507 44.8387 0.161294C44.8387 24.836 24.8359 44.8387 0.16129 44.8387C0.107505 44.8387 0.0537411 44.8386 0 44.8384V99.9999C0.0537535 100 0.107517 100 0.16129 100C55.3007 100 100 55.3007 100 0.161294C100 0.10752 100 0.0537562 99.9999 2.41118e-06Z" fill="#FFFFFF"/>
+          </svg>
+        </div>
+      </div>
+      <!--div class="emblem-logo"></div-->
     </div>
     <div class="cc" :class="[ 'g-cursor', { 'g-cursor_hover': hover }, {'g-cursor_hide': hideCursor} ]">
       <div :style="cursorCircle" class="g-cursor__circle"></div>
@@ -20,6 +36,7 @@ export default {
   },
   data() {
     return {
+      chunk: false,
       dataRef: {},
       xChild: 0,
       yChild: 0,
@@ -39,14 +56,18 @@ export default {
     }
   },
   mounted() {
+    console.log('stroke length: ', document.getElementById('initial-logo').getTotalLength());
     setTimeout(() => {
-      this.unveil = true;
+      this.changeLogo('chunk');
+    }, 3000);
+    setTimeout(() => {
+      ///this.unveil = true;
       //this.waveOffset = 700;
       console.log('unveiled');
       setTimeout(() => {
         document.getElementById('landing-video').play(); //delay landing page video
       }, 500);
-    }, 3000);
+    }, 6000);
     document.addEventListener("mousemove", this.moveCursor);
     document.addEventListener('mouseleave', (e) => {
       this.hideCursor = true;
@@ -84,12 +105,59 @@ export default {
         this.xParent = e.clientX - 20;
         this.yParent = e.clientY - 20;
       }, 100);
+    },
+    changeLogo(context) {
+      if(context == 'chunk') {
+        this.chunk = true;
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
+.emblem-logo {
+  background: blue;
+  width: 200px;
+  height: 200px;
+}
+
+.chunk-logo {
+  //background: red;
+  width: 200px;
+  height: 200px;
+
+  .chunk-big {
+    position: absolute;
+  }
+
+  .chunk-small {
+    position: absolute;
+    transform: translate(100px,100px);
+    animation: pop 2s ease forwards;
+  }
+}
+
+#initial-logo {
+  height: 200px;
+  width:200px;
+  stroke-dasharray: 455;
+  stroke-dashoffset: 455;
+  animation: 3s ease forwards circle-draw;
+}
+
+@keyframes pop {
+  to {
+    transform: translate(125px, 125px);
+  }
+}
+
+@keyframes circle-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 html {
   transition: filter 1s;
 }
@@ -164,7 +232,7 @@ html {
   height: 200px;
   //background: pink;  
   transition: 2s cubic-bezier(0.65, 0, 0.35, 1);
-  background-image: url('assets/podular-white-emblem.png');
+  //background-image: url('assets/podular-white-emblem.png');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
