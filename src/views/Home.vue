@@ -67,7 +67,6 @@ export default {
         'assets/renders/D_Handover_Render4Office_V2.004.png',
       ],
       galleryImages: [
-        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1387303_orig.png?alt=media&token=37e752ae-b580-4fed-b3ca-b0996c02f4cf',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1948920_orig.jpg?alt=media&token=1fcb20aa-5605-49bc-8810-79d4f1a55ae2',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/20151001-130856_orig.jpg?alt=media&token=a8109253-cad9-4129-a2ae-c828e5aa2ca0',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/2063890_orig.jpg?alt=media&token=69fdf29d-7674-440c-9278-4a42c388ddb5',
@@ -76,8 +75,6 @@ export default {
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/420186_orig.jpg?alt=media&token=b455e9d8-f75f-4b78-814e-73e7f4fcfbe6',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/4728590_orig.jpg?alt=media&token=4ea42be1-0ff7-4529-8cc3-1556370d6eda',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/5149153_orig.jpg?alt=media&token=5d6e3bbc-ed59-4618-8dfe-491e55614d07',
-        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/5506894_orig.png?alt=media&token=80679929-cbd7-4d20-9759-3fa0baea538b',
-        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8136686_orig.jpg?alt=media&token=907f31e0-5d68-49ad-b989-b232e282fd69',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8327397_orig.jpg?alt=media&token=4d63903f-117f-451b-9b51-0d123b10c8a9',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8618218_orig.jpg?alt=media&token=2f4e81fa-f19a-49e3-b057-b1505846011b',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/9826820_orig.jpg?alt=media&token=2bb4c44b-f172-4128-8672-4bcd6fc965aa',
