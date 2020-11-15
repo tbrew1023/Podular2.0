@@ -5,6 +5,8 @@ export default {
   name: 'Home',
   data() {
     return {
+      hoveringV: [false, false, false, false],
+      dotApeear: false,
       currentModalImage: null,
       modalContext: null,
       passcode: null,
@@ -65,7 +67,6 @@ export default {
         'assets/renders/D_Handover_Render4Office_V2.004.png',
       ],
       galleryImages: [
-        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1387303_orig.png?alt=media&token=37e752ae-b580-4fed-b3ca-b0996c02f4cf',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1948920_orig.jpg?alt=media&token=1fcb20aa-5605-49bc-8810-79d4f1a55ae2',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/20151001-130856_orig.jpg?alt=media&token=a8109253-cad9-4129-a2ae-c828e5aa2ca0',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/2063890_orig.jpg?alt=media&token=69fdf29d-7674-440c-9278-4a42c388ddb5',
@@ -74,8 +75,6 @@ export default {
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/420186_orig.jpg?alt=media&token=b455e9d8-f75f-4b78-814e-73e7f4fcfbe6',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/4728590_orig.jpg?alt=media&token=4ea42be1-0ff7-4529-8cc3-1556370d6eda',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/5149153_orig.jpg?alt=media&token=5d6e3bbc-ed59-4618-8dfe-491e55614d07',
-        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/5506894_orig.png?alt=media&token=80679929-cbd7-4d20-9759-3fa0baea538b',
-        'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8136686_orig.jpg?alt=media&token=907f31e0-5d68-49ad-b989-b232e282fd69',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8327397_orig.jpg?alt=media&token=4d63903f-117f-451b-9b51-0d123b10c8a9',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/8618218_orig.jpg?alt=media&token=2f4e81fa-f19a-49e3-b057-b1505846011b',
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/9826820_orig.jpg?alt=media&token=2bb4c44b-f172-4128-8672-4bcd6fc965aa',
@@ -98,8 +97,9 @@ export default {
   mounted() {
     this.fetchTestData();
     this.fetchText();
-    this.hideNav = false; //hide nav on landing page?
+    this.hideNav = true; //hide nav on landing page?
     var i = 0;
+
     setInterval(() => {
       this.currentImg = i;
       var aboutPath = this.imagesAbout[i];
@@ -127,14 +127,19 @@ export default {
 
       if(this.activeSection == 3) {
         console.clear();
-        console.log('play vid');
+        console.log(video);
         video.play();
+        console.log('play vid');
+        this.dotAppear = true;
       } else {
-        setTimeout(() => {
+
+        this.dotAppear = false;
+
+        /*setTimeout(() => {
           video.pause();
           video.currentTime = 0;
           video.load();
-        }, 2000);
+        }, 1500);*/
       }
 
       console.log('activeSection: ', this.activeSection);
@@ -271,6 +276,16 @@ export default {
       this.modalContext = 'gallery';
       this.modalActive = true;
       this.currentModalImage = context;
+    },
+    hovering(context) {
+      console.log('hovering', context);
+      this.hoveringV[context] = true;
+      console.log(this.hoveringV);
+      console.log(this.hoveringV[context]);
+      this.$forceUpdate();
+    },
+    notHovering(context) {
+      this.hoveringV[context] = false;
     }
   }
 }
@@ -321,8 +336,8 @@ export default {
         <div class="landing-container">
           <div class="video-container">
             <video loop muted data-keepplaying id="landing-video">
-              <source src="../assets/videos/landing-reel.mp4" type="video/mp4">
-              <source src="../assets/videos/landing-reel.ogg" type="video/ogg">
+              <source src="../assets/videos/landing.mp4" type="video/mp4">
+              <!--source src="../assets/videos/landing-reel.ogg" type="video/ogg"-->
             </video>
           </div>
           <div class="logo" :class="enterOn(1, 'default')"></div>
@@ -403,9 +418,35 @@ export default {
       <section style="background: black" class="section">
         <div style="background: black" class="slide">
           <div class="page-container">
+            <div class="clickable-container">
+              <div v-if="dotAppear" class="dot hoverable dot1" @mouseover="hovering(0)" @mouseleave="hoveringV[0] = false; $forceUpdate();">
+                <div v-if="hoveringV[0]" class="hover-box">
+                  <h3>Outer shell</h3>
+                  <p>Can come in multiple finishes, including white, black, or gun-metal grey, and any RGB color in a glossy or matte coat.</p>
+                </div>
+              </div>
+              <div v-if="dotAppear" class="dot hoverable dot2" @mouseover="hovering(1)" @mouseleave="hoveringV[1] = false; $forceUpdate();">
+                <div v-if="hoveringV[1]" class="hover-box">
+                  <h3>LED Light Shelf</h3>
+                  <p>Built-in multi-color and remote controlable LEDs bright enough to light up your Podular Unit at night and make your services shine even in the day!</p>
+                </div>
+              </div>
+              <div v-if="dotAppear" class="dot hoverable dot3" @mouseover="hovering(2)" @mouseleave="hoveringV[2] = false; $forceUpdate();">
+                <div v-if="hoveringV[2]" class="hover-box">
+                  <h3>Pod Structural Framing</h3>
+                  <p>Specially designed and engineered to handle all of your service loads and provide a sturdy, stable working enviroment!</p>
+                </div>
+              </div>
+              <div v-if="dotAppear" class="dot hoverable dot4" @mouseover="hovering(3)" @mouseleave="hoveringV[3] = false; $forceUpdate();">
+                <div v-if="hoveringV[3]" class="hover-box">
+                  <h3>Interior Shelf</h3>
+                  <p>Simple and customizable shelving that can be coated in a number of material finishes to accomodate your needs!</p>
+                </div>
+              </div>
+            </div>
             <div class="video-container" :class="enterOn(4, 'custom-video')">
               <video muted class="custom-video" id="second-custom">
-                <source src="../assets/videos/custom2.mp4" type="video/mp4">
+                <source src="../assets/videos/custom.mp4" type="video/mp4">
               </video>
             </div>
           </div>        
@@ -428,9 +469,13 @@ export default {
       </section>
 
       <!-- Contact -->
-      <section style="background: #181818" class="section">
-        <div class="page-container">
-          
+      <section style="background: black" class="section">
+        <div class="page-container contact">
+          <div class="bio-img"></div>
+          <h1>Jasna Ostojich</h1>
+          <P>Founder & Executive President</P>
+          <p>info.cafebellas.com</p>
+          <p>847.922.0061</p>
         </div>
       </section>
 
@@ -440,6 +485,125 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/styles/global';
+
+.contact {
+  flex-direction: column;
+
+  p, h1 {
+    line-height: 0 !important;
+    text-align: left !important;
+  }
+}
+
+.bio-img {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('../assets/contact.png');
+  border-radius: 100%;
+  height: 120px;
+  width: 120px;
+  margin-bottom: 24px;
+}
+
+.hover-box {
+  background: white;
+ //height: 100px;
+  width: 300px;
+  border-radius: 12px;
+  margin-top: 36px;
+  animation: flyin ease forwards 300ms;
+  color: black;
+  text-align: left;
+  padding: 12px 24px 12px 24px;
+
+  p {
+    line-height: 1.5;
+  }
+
+
+  h3 {
+    margin-bottom: 0px;
+    font-size: 18px;
+  }
+}
+
+@keyframes flyin {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  } to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dot1 {
+  top: 25vh;
+  left: 45vh;
+  animation: dot-enter 1s ease forwards 3s;
+}
+
+.dot2 {
+  top: 49vh;
+  left: 72vh;
+  animation: dot-enter 1s ease forwards 3.2s;
+}
+
+.dot3 {
+  top: 26vh;
+  left: 78vw;
+  animation: dot-enter 1s ease forwards 3.4s;
+}
+
+.dot4 {
+  top: 76vh;
+  left: 68.5vw;
+  transition: 300ms;
+  animation: dot-enter 1s ease forwards 3.6s;
+}
+
+@keyframes flux {
+  from {
+    transform: scale(0.8);
+  } to {
+    transform: scale(1);
+  }
+}
+
+@keyframes dot-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  } to {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+.dot {
+ position: absolute;
+ height: 24px;
+ width: 24px;
+ background: white;
+ border-radius: 100%;
+ opacity: 0;
+ transition: 300ms;
+ cursor: default !important;
+ //animation: flux 2s ease forwards infinite;
+
+ &:hover {
+   opacity: 1 !important;
+ }
+}
+
+.clickable-container {
+  //background:rgba(red, 0.3);
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  z-index: 9999;
+}
 
 #big-image2 {
   background-image: url('../assets/renders/sketch.gif');
