@@ -70,6 +70,7 @@ export default {
       console.log('unveiled');
       setTimeout(() => {
         document.getElementById('landing-video').play(); //delay landing page video
+        document.getElementById('second-custom').play(); //delay landing page video
       }, 500);
     }, 5100);
     document.addEventListener("mousemove", this.moveCursor);

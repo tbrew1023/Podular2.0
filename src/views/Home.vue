@@ -6,7 +6,7 @@ export default {
   data() {
     return {
       hoveringV: [false, false, false, false],
-      dotApeear: false,
+      dotAppear: false,
       currentModalImage: null,
       modalContext: null,
       passcode: null,
@@ -53,18 +53,23 @@ export default {
       context: 0,
       currentImg: null,
       imagesAbout: [
-        'assets/renders/BAR.png',
-        'assets/renders/FOODCOURT.png',
-        'assets/renders/OFFICE.png',
-        'assets/renders/GAMEROOM.png',
-        'assets/renders/SALON.png',
-        'assets/renders/RECEPTION.png',
-        'assets/renders/D_Handover_R1_V1.001.png',
-        'assets/renders/D_Handover_R2 Mall_V1.004.png',
-        'assets/renders/D_Handover_R3_V1.001.png',
-        'assets/renders/D_Handover_R4_ModernTiki_V1.003.png',
-        'assets/renders/D_Handover_Render2withBlocks_V1.001.png',
-        'assets/renders/D_Handover_Render4Office_V2.004.png',
+        'assets/renders/compressed/1.png',
+        'assets/renders/compressed/2.png',
+        'assets/renders/compressed/3.png',
+        'assets/renders/compressed/4.png',
+        'assets/renders/compressed/5.png',
+        'assets/renders/compressed/6.png',
+        'assets/renders/compressed/7.png',
+        'assets/renders/compressed/8.png',
+        'assets/renders/compressed/10.png',
+        'assets/renders/compressed/11.png',
+        'assets/renders/compressed/12.png',
+        'assets/renders/compressed/13.png',
+        'assets/renders/compressed/14.png',
+        'assets/renders/compressed/15.png',
+        'assets/renders/compressed/16.png',
+        'assets/renders/compressed/17.png',
+        'assets/renders/compressed/18.png',
       ],
       galleryImages: [
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1948920_orig.jpg?alt=media&token=1fcb20aa-5605-49bc-8810-79d4f1a55ae2',
@@ -606,7 +611,7 @@ export default {
 }
 
 #big-image2 {
-  background-image: url('../assets/renders/sketch.gif');
+  background-image: url('../assets/renders/animations/sketch.gif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat; 
