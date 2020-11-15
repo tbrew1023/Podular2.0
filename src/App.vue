@@ -123,6 +123,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
 .emblem-logo {
   //background: blue;
   width: 200px;
@@ -338,16 +340,7 @@ body {
   padding: 0px;
   margin: 0px;
   //cursor: none;
-}
-
-@font-face {
-  font-family: "Neuzeit Grotesk";
-  /*src: url("assets/FONTS/Neuzeit_Grotesk/NeuzeitGro-Reg.woff") format("woff"),
-       url("assets/FONTS/Neuzeit_Grotesk/NeuzeitGro-Reg.ttf") format("ttf");*/
-}
-
-p {
-  font-family: 'Inconsolata', monospace !important; 
+  font-family: 'Nunito', sans-serif;
 }
 
 #app {
