@@ -70,6 +70,7 @@ export default {
       console.log('unveiled');
       setTimeout(() => {
         document.getElementById('landing-video').play(); //delay landing page video
+        document.getElementById('second-custom').play(); //delay landing page video
       }, 500);
     }, 5100);
     document.addEventListener("mousemove", this.moveCursor);
@@ -344,12 +345,13 @@ body {
 }
 
 #app {
-  font-family: 'Neuzeit Grotesk', Helvetica, Arial, sans-serif;
+  font-family: 'Gotham', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
   background: #222; 
+  font-weight: normal;
 }
 
 // --------- cursor stuff ----------

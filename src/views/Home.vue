@@ -5,8 +5,9 @@ export default {
   name: 'Home',
   data() {
     return {
+      hideNav: true,
       hoveringV: [false, false, false, false],
-      dotApeear: false,
+      dotAppear: false,
       currentModalImage: null,
       modalContext: null,
       passcode: null,
@@ -53,18 +54,23 @@ export default {
       context: 0,
       currentImg: null,
       imagesAbout: [
-        'assets/renders/BAR.png',
-        'assets/renders/FOODCOURT.png',
-        'assets/renders/OFFICE.png',
-        'assets/renders/GAMEROOM.png',
-        'assets/renders/SALON.png',
-        'assets/renders/RECEPTION.png',
-        'assets/renders/D_Handover_R1_V1.001.png',
-        'assets/renders/D_Handover_R2 Mall_V1.004.png',
-        'assets/renders/D_Handover_R3_V1.001.png',
-        'assets/renders/D_Handover_R4_ModernTiki_V1.003.png',
-        'assets/renders/D_Handover_Render2withBlocks_V1.001.png',
-        'assets/renders/D_Handover_Render4Office_V2.004.png',
+        'assets/renders/compressed/1.png',
+        'assets/renders/compressed/2.png',
+        'assets/renders/compressed/3.png',
+        'assets/renders/compressed/4.png',
+        'assets/renders/compressed/5.png',
+        'assets/renders/compressed/6.png',
+        'assets/renders/compressed/7.png',
+        'assets/renders/compressed/8.png',
+        'assets/renders/compressed/10.png',
+        'assets/renders/compressed/11.png',
+        'assets/renders/compressed/12.png',
+        'assets/renders/compressed/13.png',
+        'assets/renders/compressed/14.png',
+        'assets/renders/compressed/15.png',
+        'assets/renders/compressed/16.png',
+        'assets/renders/compressed/17.png',
+        'assets/renders/compressed/18.png',
       ],
       galleryImages: [
         'https://firebasestorage.googleapis.com/v0/b/podular-f5648.appspot.com/o/1948920_orig.jpg?alt=media&token=1fcb20aa-5605-49bc-8810-79d4f1a55ae2',
@@ -124,6 +130,7 @@ export default {
       this.activeSection = destination.index;
 
       var video = document.getElementById('second-custom');
+      //var nav = document.getElementById('fp-nav').stye.display = ( this.hideNav ? 'none' : 'block' );
 
       if(this.activeSection == 3) {
         console.clear();
@@ -336,8 +343,8 @@ export default {
         <div class="landing-container">
           <div class="video-container">
             <video loop muted data-keepplaying id="landing-video">
-              <source src="../assets/videos/landing-reel.mp4" type="video/mp4">
-              <source src="../assets/videos/landing-reel.ogg" type="video/ogg">
+              <source src="../assets/videos/landing-compressed.mp4" type="video/mp4">
+              <!--source src="../assets/videos/landing-reel.ogg" type="video/ogg"-->
             </video>
           </div>
           <div class="logo" :class="enterOn(1, 'default')"></div>
@@ -446,7 +453,7 @@ export default {
             </div>
             <div class="video-container" :class="enterOn(4, 'custom-video')">
               <video muted class="custom-video" id="second-custom">
-                <source src="../assets/videos/custom2.mp4" type="video/mp4">
+                <source src="../assets/videos/custom.mp4" type="video/mp4">
               </video>
             </div>
           </div>        
@@ -589,6 +596,7 @@ export default {
  border-radius: 100%;
  opacity: 0;
  transition: 300ms;
+ cursor: default !important;
  //animation: flux 2s ease forwards infinite;
 
  &:hover {
@@ -605,7 +613,7 @@ export default {
 }
 
 #big-image2 {
-  background-image: url('../assets/renders/sketch.gif');
+  background-image: url('../assets/renders/animations/sketch.gif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat; 
