@@ -343,7 +343,7 @@ export default {
         <div class="landing-container">
           <div class="video-container">
             <video loop muted data-keepplaying id="landing-video">
-              <source src="../assets/videos/landing.mp4" type="video/mp4">
+              <source src="../assets/videos/landing-compressed.mp4" type="video/mp4">
               <!--source src="../assets/videos/landing-reel.ogg" type="video/ogg"-->
             </video>
           </div>
