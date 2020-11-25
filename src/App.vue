@@ -260,8 +260,9 @@ html {
 }
 
 #fp-nav {
-  margin-top: -190px !important;
-  margin-left: 42px;
+  top: 450px !important;
+  //margin-top: -190px !important;
+  margin-left: 38px;
 
   li {
     margin-bottom: 36px !important;
