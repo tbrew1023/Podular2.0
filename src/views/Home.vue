@@ -474,7 +474,7 @@ export default {
           <div class="bio-img"></div>
           <h1>Jasna Ostojich</h1>
           <P>Founder & Executive President</P>
-          <p>info.cafebellas.com</p>
+          <p>info@cafebellas.com</p>
           <p>847.922.0061</p>
         </div>
       </section>

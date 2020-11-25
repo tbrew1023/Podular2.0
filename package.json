@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "pull": "git add . && git commit -m 'stash' && git pull",
     "push": "git add . && git commit -m 'auto-commit' && git push -u origin master",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
