@@ -345,12 +345,13 @@ body {
 }
 
 #app {
-  font-family: 'Neuzeit Grotesk', Helvetica, Arial, sans-serif;
+  font-family: 'Gotham', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
   background: #222; 
+  font-weight: normal;
 }
 
 // --------- cursor stuff ----------

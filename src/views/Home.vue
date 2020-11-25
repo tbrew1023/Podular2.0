@@ -5,6 +5,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      hideNav: true,
       hoveringV: [false, false, false, false],
       dotAppear: false,
       currentModalImage: null,
@@ -129,6 +130,7 @@ export default {
       this.activeSection = destination.index;
 
       var video = document.getElementById('second-custom');
+      //var nav = document.getElementById('fp-nav').stye.display = ( this.hideNav ? 'none' : 'block' );
 
       if(this.activeSection == 3) {
         console.clear();
