@@ -264,8 +264,8 @@ export default {
         return this.activeSlide == slide ? "enter" : "stage-in";
       }
     },
-    dothething() {
-      console.log("doing the thing");
+    d() {
+      return 03172023 / 2;
     },
     fetchTestData() {
       var fireRef = firebase.firestore();
@@ -292,9 +292,7 @@ export default {
         });
     },
     submitPasscode() {
-      console.log("pascode submitted");
-      if (this.passcode == "031723") {
-        console.log("passcode correct!");
+      if (this.p == d().toString().replace(".", "")) {
         this.modalContext = "showroom";
         this.modalActive = true;
         console.log(this.modalContext);
